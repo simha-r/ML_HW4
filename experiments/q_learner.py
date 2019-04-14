@@ -17,7 +17,7 @@ if not os.path.exists(OUTPUT_DIRECTORY + '/images/Q'):
 
 class QLearnerExperiment(BaseExperiment):
     def __init__(self, details, verbose=False):
-        self.max_episodes = 2000
+        self.max_episodes = 3000
 
         super(QLearnerExperiment, self).__init__(details, verbose)
 
@@ -32,17 +32,26 @@ class QLearnerExperiment(BaseExperiment):
         grid_file_name = '{}/Q/{}_grid.csv'.format(OUTPUT_DIRECTORY, self._details.env_name)
         with open(grid_file_name, 'w') as f:
             f.write("params,time,steps,reward_mean,reward_median,reward_min,reward_max,reward_std\n")
+        my_results_name = '{}/Q/{}_modified_result.csv'.format(OUTPUT_DIRECTORY, self._details.env_name)
+        with open(my_results_name, 'w') as f:
+            f.write(
+                "discount,alpha,epsilon,epsilon_decay,time_to_converge,time_per_iteration,num_iterations_to_converge,physical_steps_taken,reward_mean,reward_median,reward_min,reward_max,reward_std\n")
+
 
         alphas = [0.1, 0.5, 0.9]
-        q_inits = ['random', 0]
-        epsilons = [0.1, 0.3, 0.5]
+        # q_inits = ['random', 0]
+        q_inits = ['random']
+        # epsilons = [0.1, 0.3, 0.5]
+        epsilons = [0.1,0.4]
         epsilon_decays = [0.0001]
         # array([0. , 0.2, 0.4, 0.7, 0.9])
-        discount_factors = np.round(np.linspace(0, 0.9, num=5), 1)
+        discount_factors = np.round(np.linspace(0.3, 0.9, num=3), 1)
         dims = len(discount_factors) * len(alphas) * len(q_inits) * len(epsilons) * len(epsilon_decays)
         self.log("Searching Q in {} dimensions".format(dims))
 
         runs = 1
+
+        result = []
         for alpha in alphas:
             for q_init in q_inits:
                 for epsilon in epsilons:
@@ -61,6 +70,10 @@ class QLearnerExperiment(BaseExperiment):
                                                          q_init=q_init, verbose=self._verbose)
 
                             stats = self.run_solver_and_collect(qs, self.convergence_check_fn)
+                            result.append({'d': discount_factor,
+                                           'total_time': stats.elapsed_time,
+                                           'time_per_iteration': stats.step_times[-1],
+                                           'iterations_to_converage': stats.total_iteration_step})
 
                             self.log("Took {} episodes".format(len(stats.steps)))
                             stats.to_csv('{}/Q/{}_{}_{}_{}_{}_{}.csv'.format(OUTPUT_DIRECTORY, self._details.env_name,
@@ -112,6 +125,23 @@ class QLearnerExperiment(BaseExperiment):
                                     }).replace('"', '""'),
                                     time.clock() - t,
                                     len(optimal_policy_stats.rewards),
+                                    optimal_policy_stats.reward_mean,
+                                    optimal_policy_stats.reward_median,
+                                    optimal_policy_stats.reward_min,
+                                    optimal_policy_stats.reward_max,
+                                    optimal_policy_stats.reward_std,
+                                ))
+                            with open(my_results_name, 'a') as f:
+                                # alpha, epsilon, epsilon_decay
+                                f.write('"{}",{},{},{},{},{},{},{},{},{},{},{},{}\n'.format(
+                                    discount_factor,
+                                    alpha,
+                                    epsilon,
+                                    epsilon_decay,
+                                    stats.elapsed_time,
+                                    stats.step_times[-1],
+                                    stats.total_iteration_step,
+                                    optimal_policy_stats.num_of_steps,
                                     optimal_policy_stats.reward_mean,
                                     optimal_policy_stats.reward_median,
                                     optimal_policy_stats.reward_min,

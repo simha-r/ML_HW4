@@ -19,6 +19,12 @@ register(
 )
 
 register(
+    id='RewardingFrozenLake15x15-v0',
+    entry_point='environments:RewardingFrozenLakeEnv',
+    kwargs={'map_name': '15x15'}
+)
+
+register(
     id='RewardingFrozenLakeNoRewards20x20-v0',
     entry_point='environments:RewardingFrozenLakeEnv',
     kwargs={'map_name': '20x20', 'rewarding': False}
@@ -48,8 +54,8 @@ def get_rewarding_no_reward_frozen_lake_environment():
     return gym.make('RewardingFrozenLakeNoRewards8x8-v0')
 
 
-def get_large_rewarding_no_reward_frozen_lake_environment():
-    return gym.make('RewardingFrozenLakeNoRewards20x20-v0')
+def get_large_rewarding_frozen_lake_environment():
+    return gym.make('RewardingFrozenLake15x15-v0')
 
 
 def get_cliff_walking_environment():

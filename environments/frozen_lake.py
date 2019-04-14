@@ -1,4 +1,6 @@
+# -*- coding: utf-8 -*-
 import sys
+
 
 import numpy as np
 from gym import utils
@@ -48,7 +50,24 @@ MAPS = {
         "FHHFFFHFFFFHFFFFFHFF",
         "FHHFHFHFFFFFFFFFFFFF",
         "FFFHFFFFFHFFFFHHFHFG"
-    ]
+    ],
+    "15x15": [
+            "SFFFFFHFFFFFFFF",
+            "FFFFFFFFFFFFFFF",
+            "FFFFFFFFFFFFFFF",
+            "FFFFFFFFFFFFFFF",
+            "FFFFFFFFFFFFFFF",
+            "FFFHFFFFFFHFFFF",
+            "FFFFFFFFFFHFFFF",
+            "FFFFFFFFFHHHFFF",
+            "HHHFFFFFFFHFFFF",
+            "FFFFHFFFFFHFFFF",
+            "FFFFFFFFFFFFFFF",
+            "FFFFHFFFFFFFFFF",
+            "FFFFFFFFFFFFFFF",
+            "FHFHFHFFFFFFFFF",
+            "FFHFFFFFFHHFFFG"
+        ]
 }
 
 

@@ -39,7 +39,7 @@ if __name__ == '__main__':
     verbose = args.verbose
     threads = args.threads
 
-    seed = 1845
+    seed = 25986
     if seed is None:
         seed = np.random.randint(0, (2 ** 32) - 1)
         logger.info("Using seed {}".format(seed))
@@ -55,14 +55,13 @@ if __name__ == '__main__':
             'env': environments.get_rewarding_frozen_lake_environment(),
             'name': 'frozen_lake',
             'readable_name': 'Frozen Lake (8x8)',
-        }
-	    # ,
-        # {
-        #     'env': environments.get_large_rewarding_no_reward_frozen_lake_environment(),
-        #     'name': 'large_frozen_lake',
-        #     'readable_name': 'Frozen Lake (20x20)',
-        # }
-	    # ,
+        },
+        {
+            'env': environments.get_large_rewarding_frozen_lake_environment(),
+            'name': 'large_frozen_lake',
+            'readable_name': 'Frozen Lake (15x15)',
+        },
+
         # {
         #     'env': environments.get_windy_cliff_walking_environment(),
         #     'name': 'cliff_walking',

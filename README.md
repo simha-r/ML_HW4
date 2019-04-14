@@ -1,3 +1,8 @@
+# References Used
+All Code has been taken from Chad Maron https://github.com/cmaron/CS-7641-assignments/tree/master/assignment4
+and some visualization code has been taken from https://github.gatech.edu/mmallo3/CS7641_Project4
+and some snippets of code from #cs7641 channel on slack.
+
 # Markov Decision Processes
 
 ## Output
